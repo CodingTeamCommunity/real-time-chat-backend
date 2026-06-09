@@ -10,6 +10,7 @@ const connectDb = async () => {
         user: process.env.MONGO_USER,
         pass: process.env.MONGO_PASS,
         authSource: process.env.MONGO_AUTH_SOURCE,
+        serverSelectionTimeoutMS: 5000,
       };
       mongoose
         .connect(uri, options)
