@@ -1,36 +1,28 @@
-import { Server } from "http";
 import app from "../src/app";
-import request from "supertest";
-import TestAgent from "supertest/lib/agent";
+import supertest from "supertest";
+import * as test_db from "./test_db";
+import mongoose from "mongoose";
 
-// Variable for holding the server which will be tested
-let server: Server | null = null;
+const request = supertest(app);
 
-// Variable for holding the request agent that will send requests to the server
-let myRequest: InstanceType<typeof TestAgent> | null = null;
+describe("Test request with mongoose", () => {
+  beforeAll(async () => {
+    await test_db.connect();
+    if (mongoose.connection.readyState == 1) {
+      console.log("Mongoose connected to test DB");
+    }
+  });
+  afterEach(async () => {
+    await test_db.clear();
+  });
+  afterAll(async () => {
+    await test_db.close();
+  });
 
-// Before All Tests: Load the express server and request agent
-beforeAll((done) => {
-  server = app.listen(done);
-  myRequest = request.agent(server);
-  done();
-});
-
-// After All Tests: Close down the express server
-afterAll((done) => {
-  server?.close(done);
-  done();
-});
-
-describe("GET /", () => {
-  it("Should return 200", (done) => {
-    myRequest
-      ?.get("/")
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        expect(res.body).toBe("Hello from Node.js, Express, and TypeScript!");
-        return done();
-      });
+  test("GET - /", async () => {
+    const res = await request.get("/").send();
+    const body = res.body;
+    expect(res.statusCode).toBe(200);
+    expect(body).toBe("Hello from Node.js, Express, and TypeScript!");
   });
 });
