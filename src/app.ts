@@ -4,12 +4,16 @@ import { IDP_ROUTE_ROOT } from "./constants";
 import idpRouter from "./routes/idp";
 import { configDotenv } from "dotenv";
 import cors from "cors";
+import connectDb from "./db_conn";
 
 // Configure .env file if present into the process of the execution
 configDotenv();
 
 // Create the express server application
 const app: Application = express();
+
+// Initialize database connection
+connectDb();
 
 // Configure the express server to allow for cors and set dedicated origin
 app.use(
