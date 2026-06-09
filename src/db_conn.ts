@@ -2,6 +2,7 @@ import mongoose, { ConnectOptions } from "mongoose";
 
 const connectDb = async () => {
   try {
+    console.log(`Using ${process.env.NODE_ENV} database for connection...`);
     const baseUri = process.env.MONGO_BASE_URI;
     const dbName = process.env.MONGO_DB_NAME;
     if (baseUri && dbName) {

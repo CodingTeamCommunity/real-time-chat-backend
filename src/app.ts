@@ -13,7 +13,9 @@ configDotenv();
 const app: Application = express();
 
 // Initialize database connection
-connectDb();
+if (process.env.NODE_ENV != "test") {
+  connectDb();
+}
 
 // Configure the express server to allow for cors and set dedicated origin
 app.use(
