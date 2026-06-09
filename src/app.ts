@@ -5,6 +5,8 @@ import idpRouter from "./routes/idp";
 import { configDotenv } from "dotenv";
 import cors from "cors";
 import connectDb from "./db_conn";
+import { auth } from "./auth";
+import { toNodeHandler } from "better-auth/node";
 
 // Configure .env file if present into the process of the execution
 configDotenv();
@@ -16,6 +18,8 @@ const app: Application = express();
 if (process.env.NODE_ENV != "test") {
   connectDb();
 }
+
+app.all("/api/auth/{*any}", toNodeHandler(auth));
 
 // Configure the express server to allow for cors and set dedicated origin
 app.use(
