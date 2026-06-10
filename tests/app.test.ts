@@ -2,8 +2,12 @@ import app from "../src/app";
 import supertest from "supertest";
 import * as test_db from "./test_db";
 import mongoose from "mongoose";
+import { PostgreSqlContainer } from "@testcontainers/postgresql";
+import { execSync } from "child_process";
 
-const request = supertest(app);
+let request = supertest(app);
+
+let container: any;
 
 describe("Test request with mongoose", () => {
   beforeAll(async () => {
@@ -11,6 +15,8 @@ describe("Test request with mongoose", () => {
     if (mongoose.connection.readyState == 1) {
       console.log("Mongoose connected to test DB");
     }
+    container = await new PostgreSqlContainer("postgres:17-alpine").start();
+    process.env.PG_TEST_CONN = container.getConnectionUri();
   });
   afterEach(async () => {
     await test_db.clear();
