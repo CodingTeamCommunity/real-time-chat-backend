@@ -1,8 +1,9 @@
 import mongoose, { ConnectOptions } from "mongoose";
+import logger from "./logger.js";
 
 const connectDb = async () => {
   try {
-    console.log(`Using ${process.env.NODE_ENV} database for connection...`);
+    logger.info(`Using ${process.env.NODE_ENV} database for connection...`);
     const baseUri = process.env.MONGO_BASE_URI;
     const dbName = process.env.MONGO_DB_NAME;
     if (baseUri && dbName) {
@@ -15,18 +16,18 @@ const connectDb = async () => {
       };
       mongoose
         .connect(uri, options)
-        .then(() => console.log("Successfully connected to MongoDB!"))
-        .catch((err) => console.error("Connection Rrror: ", err));
+        .then(() => logger.info("Successfully connected to MongoDB!"))
+        .catch((err) => logger.error("Connection Error: ", err));
     } else {
-      console.error(
+      logger.error(
         "Connection Error: Mongo DB uri or name is undefined, please define the enviornment variables.",
       );
     }
   } catch (error) {
     if (error instanceof Error) {
-      console.error(`Error: ${error.message}`);
+      logger.error(`Error: ${error.message}`);
     } else {
-      console.error("Unexpected Error: ", error);
+      logger.error("Unexpected Error: ", error);
     }
   }
 };
