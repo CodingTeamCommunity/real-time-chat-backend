@@ -1,4 +1,4 @@
-import app from "./app";
+import app from "./app.js";
 
 // Set the port of the server in either dev or production
 const PORT = process.env.PORT || 3000;

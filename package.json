@@ -2,22 +2,18 @@
   "name": "real-time-chat-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=dev nodemon",
+    "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "start": "cross-env NODE_ENV=prod node dist/index.js",
-    "test": "cross-env NODE_ENV=test jest",
+    "start": "node dist/index.js",
+    "test": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules npx jest",
     "test:watch": "jest --watch"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/CodingTeamCommunity/real-time-chat-backend.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/CodingTeamCommunity/real-time-chat-backend/issues"
   },
@@ -25,14 +21,14 @@
   "dependencies": {
     "better-auth": "^1.6.15",
     "cors": "^2.8.6",
+    "cross-env": "^10.1.0",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "mongoose": "^9.6.3",
+    "mongoose": "^9.7.0",
     "pg": "^8.21.0"
   },
   "devDependencies": {
     "@testcontainers/postgresql": "^12.0.1",
-    "@tsconfig/node20": "^20.1.9",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/jest": "^30.0.0",
@@ -40,14 +36,11 @@
     "@types/node": "^25.9.2",
     "@types/pg": "^8.20.0",
     "@types/supertest": "^7.2.0",
-    "cross-env": "^10.1.0",
     "jest": "^30.4.2",
     "mongodb-memory-server": "^11.2.0",
-    "nodemon": "^3.1.14",
     "supertest": "^7.2.2",
     "testcontainers": "^12.0.1",
     "ts-jest": "^29.4.11",
-    "ts-node": "^10.9.2",
     "tsx": "^4.22.4",
     "typescript": "^6.0.3"
   }

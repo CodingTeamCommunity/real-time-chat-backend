@@ -1,6 +1,6 @@
-import app from "../src/app";
+import app from "../src/app.js";
 import supertest from "supertest";
-import * as test_db from "./test_db";
+import * as test_db from "./test_db.js";
 import mongoose from "mongoose";
 import { PostgreSqlContainer } from "@testcontainers/postgresql";
 import { execSync } from "child_process";
@@ -16,7 +16,7 @@ describe("Test request with mongoose", () => {
       console.log("Mongoose connected to test DB");
     }
     container = await new PostgreSqlContainer("postgres:17-alpine").start();
-    process.env.PG_TEST_CONN = container.getConnectionUri();
+    // process.env.PG_TEST_CONN = container.getConnectionUri();
   });
   afterEach(async () => {
     await test_db.clear();
