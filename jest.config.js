@@ -1,20 +1,32 @@
-module.exports = {
-  // Use ts-jest preset for testing TypeScript files with Jest
-  preset: "ts-jest",
-  // Set the test environment to Node.js
+// jest.config.js (Ensure your package.json has "type": "module")
+import { createDefaultEsmPreset } from "ts-jest";
+
+/** @type {import('ts-jest').JestConfigWithTsJest} */
+const config = {
+  // Use the default ESM preset supplied by ts-jest
+  ...createDefaultEsmPreset(),
+
   testEnvironment: "node",
 
-  // Define the root directory for tests and modules
-  roots: ["<rootDir>/tests"],
+  // Treat .ts extensions as native ES Modules
+  extensionsToTreatAsEsm: [".ts"],
 
-  // Use ts-jest to transform TypeScript files
-  transform: {
-    "^.+\\.tsx?$": "ts-jest",
+  // Crucial: Maps your relative './file.js' imports to find the actual './file.ts' source
+  moduleNameMapper: {
+    "^(\\.{1,2}/.*)\\.js$": "$1",
   },
 
-  // Regular expression to find test files
-  testRegex: "((\\.|/)(test|spec))\\.tsx?$",
-
-  // File extensions to recognize in module resolution
-  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
+  transform: {
+    "^.+\\.tsx?$": [
+      "ts-jest",
+      {
+        useESM: true, // Tells ts-jest to emit ESM syntax instead of CommonJS
+      },
+    ],
+  },
+  transformIgnorePatterns: [
+    "node_modules/(?!(name-of-problem-package|another-esm-package)/)",
+  ],
 };
+
+export default config;
