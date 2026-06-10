@@ -7,6 +7,7 @@ import cors from "cors";
 import connectDb from "./db_conn.js";
 import { auth } from "./auth.js";
 import { toNodeHandler } from "better-auth/node";
+import loginRouter from "./routes/login.js";
 
 // Configure .env file if present into the process of the execution
 configDotenv();
@@ -37,11 +38,15 @@ app.use(express.json());
 
 // Add server routes from ./routes directory
 app.use(IDP_ROUTE_ROOT, idpRouter);
+app.use(IDP_ROUTE_ROOT, loginRouter);
+
 
 // Un-Authorized Route: General server ping for checking health of server
 app.get("/", (req: Request, res: Response) => {
   res.json("Hello from Node.js, Express, and TypeScript!");
 });
+
+
 
 // Export server app so that this app can be used in tests
 export default app;
