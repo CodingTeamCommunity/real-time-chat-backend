@@ -1,6 +1,9 @@
 import { betterAuth } from "better-auth";
 import { Pool, PoolConfig } from "pg";
 import { testUtils } from "better-auth/plugins";
+import { configDotenv } from "dotenv";
+
+configDotenv();
 
 const config: PoolConfig = {
   user: process.env.PG_USER,
@@ -17,6 +20,8 @@ const config: PoolConfig = {
 const testConfig: PoolConfig = {
   connectionString: process.env.PG_TEST_CONN,
 };
+export const dbPool = new Pool(process.env.NODE_ENV == "test" ? testConfig : config);
+
 
 export const auth = betterAuth({
   database: new Pool(process.env.NODE_ENV == "test" ? testConfig : config),
